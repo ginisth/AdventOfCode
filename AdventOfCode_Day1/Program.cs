@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 
@@ -8,46 +9,42 @@ namespace AdventOfCode_Day1
     {
         static void Main(string[] args)
         {
-            int sumFuel = 0;
-            int sumFuelOverFuel = 0;
-            var fileLines = File.ReadAllLines("C:\\Day1.txt");
-            foreach (var line in fileLines)
+            var dict = new Dictionary<int, string>();
+            string[] fileLines;
+            string className;
+            object newInstance;
+            Console.WriteLine("Type Day");
+            dict.Add(1, "C:\\Day1.txt");
+            if (Int32.TryParse(Console.ReadLine(), out int input))
             {
-                var mass = Convert.ToInt32(line);
-                var fuel = CalculateEachModule(mass);
-                var fuelOverFuel = CalculateEachModuleOverFuel(mass);
-                sumFuel += fuel;
-                sumFuelOverFuel += fuelOverFuel;
+                if (dict.TryGetValue(input, out string path))
+                {
+                    fileLines = File.ReadAllLines(path);
+                    className = path.Replace("C:\\", "AdventOfCode_Day1.").Replace(".txt", string.Empty);
+                    Type type = Type.GetType(className);
+                    newInstance = Activator.CreateInstance(type, new object[] { fileLines});
+                    var method = type.GetMethod("MainCalculation");
+                    method.Invoke(newInstance, null);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Wrong input");
+                Console.Read();
+                Environment.Exit(1);
             }
 
-            Console.WriteLine($"Sum: {sumFuel}");
-            Console.WriteLine($"Sum Fuel over Fuel:{sumFuelOverFuel}");
+
+
+
+           // var fileLines = File.ReadAllLines("C:\\Day1.txt");
+           
+
+           
 
             Console.Read();
         }
 
-        static int CalculateEachModule(double x)
-        {
-            int roundedNum = (int)Math.Floor(x / 3);
-            int fuel = roundedNum - 2;
-            return fuel;
-        }
-
-        static int CalculateEachModuleOverFuel(double fuel)
-        {
-            int sumOverFuel = 0;
-
-            do
-            {
-                int roundedNum = (int)Math.Floor(fuel / 3);
-                fuel = roundedNum - 2;
-
-                if (fuel > 0)
-                    sumOverFuel += (int)fuel;
-                else
-                    return sumOverFuel;
-            }
-            while (true);
-        }
+       
     }
 }
