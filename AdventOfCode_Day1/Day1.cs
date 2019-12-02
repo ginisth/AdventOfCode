@@ -8,7 +8,7 @@ namespace AdventOfCode_Day1
 {
     public class Day1
     {
-        public string[] FileLines { get; set; }
+        private string[] FileLines { get; set; }
         int sumFuel = 0;
         int sumFuelOverFuel = 0;
 

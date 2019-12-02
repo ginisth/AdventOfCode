@@ -15,6 +15,7 @@ namespace AdventOfCode_Day1
             object newInstance;
             Console.WriteLine("Type Day");
             dict.Add(1, "C:\\Day1.txt");
+            dict.Add(2, "C:\\Day2.txt");
             if (Int32.TryParse(Console.ReadLine(), out int input))
             {
                 if (dict.TryGetValue(input, out string path))
@@ -22,7 +23,7 @@ namespace AdventOfCode_Day1
                     fileLines = File.ReadAllLines(path);
                     className = path.Replace("C:\\", "AdventOfCode_Day1.").Replace(".txt", string.Empty);
                     Type type = Type.GetType(className);
-                    newInstance = Activator.CreateInstance(type, new object[] { fileLines});
+                    newInstance = Activator.CreateInstance(type, new object[] { fileLines });
                     var method = type.GetMethod("MainCalculation");
                     method.Invoke(newInstance, null);
                 }
@@ -34,17 +35,9 @@ namespace AdventOfCode_Day1
                 Environment.Exit(1);
             }
 
-
-
-
-           // var fileLines = File.ReadAllLines("C:\\Day1.txt");
-           
-
-           
-
             Console.Read();
         }
 
-       
+
     }
 }
