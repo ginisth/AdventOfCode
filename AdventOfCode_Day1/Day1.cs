@@ -6,18 +6,14 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode_Day1
 {
-    public class Day1
+    public class Day1 : AbstractDay
     {
-        private string[] FileLines { get; set; }
         int sumFuel = 0;
         int sumFuelOverFuel = 0;
 
-        public Day1(string[] fileLines)
-        {
-            FileLines = fileLines;
-        }
+        public Day1(string[] fileLines) : base(fileLines) { }
 
-        public void MainCalculation()
+        public override void MainCalculation()
         {
             foreach (var line in FileLines)
             {
@@ -28,8 +24,8 @@ namespace AdventOfCode_Day1
                 sumFuelOverFuel += fuelOverFuel;
             }
 
-            Console.WriteLine($"Sum: {sumFuel}");
-            Console.WriteLine($"Sum Fuel over Fuel:{sumFuelOverFuel}");
+            Console.WriteLine($"Day1--Sum: {sumFuel}");
+            Console.WriteLine($"Day1--Sum Fuel over Fuel:{sumFuelOverFuel}");
         }
 
         static int CalculateEachModule(double x)

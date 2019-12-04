@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode_Day1
 {
@@ -9,35 +11,64 @@ namespace AdventOfCode_Day1
     {
         static void Main(string[] args)
         {
-            var dict = new Dictionary<int, string>();
-            string[] fileLines;
-            string className;
-            object newInstance;
-            Console.WriteLine("Type Day");
-            dict.Add(1, "C:\\Day1.txt");
-            dict.Add(2, "C:\\Day2.txt");
-            if (Int32.TryParse(Console.ReadLine(), out int input))
+            Dictionary<int, string> dict = GetDays();
+
+            do
             {
-                if (dict.TryGetValue(input, out string path))
+                Console.WriteLine("Type Day");
+
+                if (Int32.TryParse(Console.ReadLine(), out int input))
                 {
-                    fileLines = File.ReadAllLines(path);
-                    className = path.Replace("C:\\", "AdventOfCode_Day1.").Replace(".txt", string.Empty);
-                    Type type = Type.GetType(className);
-                    newInstance = Activator.CreateInstance(type, new object[] { fileLines });
-                    var method = type.GetMethod("MainCalculation");
-                    method.Invoke(newInstance, null);
+                    if (dict.TryGetValue(input, out string path))
+                    {
+                        string[] fileLines = File.ReadAllLines(path);
+                        Uri uri = new Uri(path);
+                        string className = uri.Segments.Last().Replace(".txt", string.Empty);
+                        className = "AdventOfCode_Day1." + className;
+                        Type classType = Type.GetType(className);
+                        object newInstance = Activator.CreateInstance(classType, new object[] { fileLines });
+                        object method = classType.GetMethod("MainCalculation").Invoke(newInstance, null);
+
+                    }
+                    else
+                        Console.WriteLine("Value doesn't exists");
                 }
-            }
-            else
-            {
-                Console.WriteLine("Wrong input");
-                Console.Read();
-                Environment.Exit(1);
-            }
+                else
+                    Console.WriteLine("Day should be an integer value");
+
+            } while (CheckPoint());
 
             Console.Read();
         }
 
+        static Dictionary<int, string> GetDays()
+        {
+            var dict = new Dictionary<int, string>();
+            var assembly = Assembly.GetExecutingAssembly().Location;
+            var folderPath = assembly.Replace("bin\\Debug\\AdventOfCode_Day1.exe", "Inputs");
+            DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
+            FileInfo[] files = directoryInfo.GetFiles("*.txt");
+
+            foreach (var file in files)
+            {
+                Console.WriteLine(file.ToString());
+                var resultString = Regex.Match(file.ToString(), @"\d+").Value;
+                if (Int32.TryParse(resultString, out int dictKey))
+                    dict.Add(dictKey, file.FullName);
+            }
+
+            return dict;
+        }
+
+        static bool CheckPoint()
+        {
+            Console.WriteLine("Press any key to continue or ESC to exit");
+            var key = Console.ReadKey(true).Key;
+            if (key == ConsoleKey.Escape)
+                Environment.Exit(1);
+
+            return true;
+        }
 
     }
 }

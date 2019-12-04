@@ -6,16 +6,11 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode_Day1
 {
-    public class Day2
+    public class Day2 : AbstractDay
     {
-        private string[] FileLines { get; set; }
+        public Day2(string[] fileLines) : base(fileLines) { }
 
-        public Day2(string[] fileLines)
-        {
-            FileLines = fileLines;
-        }
-
-        public void MainCalculation()
+        public override void MainCalculation()
         {
             string[] text = FileLines[0].Split(',');
             List<int> newList = new List<int>();
@@ -61,18 +56,10 @@ namespace AdventOfCode_Day1
                 }
                 else if (newList[i] == 99)
                 {
-                    Console.WriteLine(newList[0]);
+                    Console.WriteLine($"Day2--{newList[0]}");
                     break;
                 }
-                Console.WriteLine(sum);
-
             }
-
-
-
-
-
-
         }
     }
 }
