@@ -11,7 +11,7 @@ namespace AdventOfCode_Day1
     {
         static void Main(string[] args)
         {
-            Dictionary<int, string> dict = GetDays();
+            Dictionary<int, string> dict = GetDaysAndPaths();
 
             do
             {
@@ -23,9 +23,10 @@ namespace AdventOfCode_Day1
                     {
                         string[] fileLines = File.ReadAllLines(path);
                         Uri uri = new Uri(path);
-                        string className = uri.Segments.Last().Replace(".txt", string.Empty);
-                        className = "AdventOfCode_Day1." + className;
-                        Type classType = Type.GetType(className);
+                        string className = uri.Segments.Last().Replace(".txt", string.Empty); //get the associated class name from the path,
+                        string currentNamespace = MethodBase.GetCurrentMethod().DeclaringType.Namespace;
+                        string classFullName = currentNamespace + "." + className;
+                        Type classType = Type.GetType(classFullName);
                         object newInstance = Activator.CreateInstance(classType, new object[] { fileLines });
                         object method = classType.GetMethod("MainCalculation").Invoke(newInstance, null);
 
@@ -41,19 +42,17 @@ namespace AdventOfCode_Day1
             Console.Read();
         }
 
-        static Dictionary<int, string> GetDays()
+        static Dictionary<int, string> GetDaysAndPaths()
         {
-            var dict = new Dictionary<int, string>();
-            var assembly = Assembly.GetExecutingAssembly().Location;
-            var folderPath = assembly.Replace("bin\\Debug\\AdventOfCode_Day1.exe", "Inputs");
-            DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
-            FileInfo[] files = directoryInfo.GetFiles("*.txt");
+            Dictionary<int, string> dict = new Dictionary<int, string>();
+            string assembly = Assembly.GetExecutingAssembly().Location;
+            string folderPath = assembly.Replace("bin\\Debug\\AdventOfCode_Day1.exe", "Inputs");
+            FileInfo[] files = new DirectoryInfo(folderPath).GetFiles("*.txt");
 
-            foreach (var file in files)
+            foreach (FileInfo file in files)
             {
-                Console.WriteLine(file.ToString());
-                var resultString = Regex.Match(file.ToString(), @"\d+").Value;
-                if (Int32.TryParse(resultString, out int dictKey))
+                string day = Regex.Match(file.ToString(), @"\d+").Value;
+                if (Int32.TryParse(day, out int dictKey))
                     dict.Add(dictKey, file.FullName);
             }
 
