@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace AdventOfCode_Day1
+namespace AdventOfCode2019
 {
     class Program
     {

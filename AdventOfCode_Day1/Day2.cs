@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode_Day1
+namespace AdventOfCode2019
 {
     public class Day2 : AbstractDay
     {

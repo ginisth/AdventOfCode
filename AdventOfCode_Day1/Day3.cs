@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AdventOfCode_Day1
+namespace AdventOfCode2019
 {
     public class Day3 : AbstractDay
     {
