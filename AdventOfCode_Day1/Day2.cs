@@ -17,7 +17,6 @@ namespace AdventOfCode_Day1
         {
             List<int> textToList = FileLines[0].Split(',').Select(int.Parse).ToList();
 
-
             int gravityassist = GetGravityAssist(textToList);
             Console.WriteLine($"Gravity Assist:{gravityassist}");
 
