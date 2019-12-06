@@ -38,18 +38,14 @@ namespace AdventOfCode2019
 
             foreach (var diffPass in listOfDiffPass)
             {
-                Dictionary<int, int> repeatedNumbers = new Dictionary<int, int>();
-
                 for (int i = 0; i < diffPass.Count(); i++)
                 {
-                    int digitCounter = diffPass.Count(c => c.Equals(diffPass[i]));
-
-                    if (!repeatedNumbers.TryGetValue(diffPass[i], out _))
-                        repeatedNumbers.Add(diffPass[i], digitCounter);
+                    if (diffPass.Count(c => c.Equals(diffPass[i])) == 2)
+                    {
+                        countDiffPassPart2++;
+                        break;
+                    }
                 }
-
-                if (repeatedNumbers.ContainsValue(2))
-                    countDiffPassPart2++;
             }
 
             Console.WriteLine("Different Passwords of Part1: " + countDiffPassPart1);
