@@ -16,7 +16,6 @@ namespace AdventOfCode2019
             string[] text = FileLines[0].Split('-');
             int from = Convert.ToInt32(text[0]);
             int to = Convert.ToInt32(text[1]);
-            List<List<int>> listOfDiffPass = new List<List<int>>();
             int countDiffPassPart1 = 0;
             int countDiffPassPart2 = 0;
 
@@ -25,24 +24,11 @@ namespace AdventOfCode2019
                 List<int> digits = DigitsOfNumber(number).Reverse().ToList();
 
                 if (digits.Aggregate((x, y) => x <= y ? y : 10) != 10 && digits.GroupBy(x => x).Any(z => z.Count() > 1))
-                {
                     countDiffPassPart1++;
-                    listOfDiffPass.Add(digits);
-                }
+                if (digits.Aggregate((x, y) => x <= y ? y : 10) != 10 && digits.GroupBy(x => x).Any(z => z.Count() == 2))
+                    countDiffPassPart2++;
             }
 
-
-            foreach (var diffPass in listOfDiffPass)
-            {
-                for (int i = 0; i < diffPass.Count(); i++)
-                {
-                    if (diffPass.Count(c => c.Equals(diffPass[i])) == 2)
-                    {
-                        countDiffPassPart2++;
-                        break;
-                    }
-                }
-            }
 
             Console.WriteLine("Different Passwords of Part1: " + countDiffPassPart1);
             Console.WriteLine("Different Passwords of Part2: " + countDiffPassPart2);
