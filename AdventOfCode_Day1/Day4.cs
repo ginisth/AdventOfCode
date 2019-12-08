@@ -18,20 +18,16 @@ namespace AdventOfCode2019
             int to = Convert.ToInt32(text[1]);
             List<List<int>> listOfDiffPass = new List<List<int>>();
             int countDiffPassPart1 = 0;
-            var countDiffPassPart2 = 0;
+            int countDiffPassPart2 = 0;
 
             for (int number = from; number <= to; number++)
             {
                 List<int> digits = DigitsOfNumber(number).Reverse().ToList();
 
-
-                if (digits[0] <= digits[1] && digits[1] <= digits[2] && digits[2] <= digits[3] && digits[3] <= digits[4] && digits[4] <= digits[5])
+                if (digits.Aggregate((x, y) => x <= y ? y : 10) != 10 && digits.GroupBy(x => x).Any(z => z.Count() > 1))
                 {
-                    if (digits.GroupBy(x => x).Any(z => z.Count() > 1))
-                    {
-                        countDiffPassPart1++;
-                        listOfDiffPass.Add(digits);
-                    }
+                    countDiffPassPart1++;
+                    listOfDiffPass.Add(digits);
                 }
             }
 
