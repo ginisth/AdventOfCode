@@ -14,8 +14,8 @@ namespace AdventOfCode2019
         public override void MainCalculation()
         {
             List<Element> orbitList = new List<Element>();
-            List<string> parentObject = new List<string>();
-            List<string> childObject = new List<string>();
+            List<string> parentObjects = new List<string>();
+            List<string> childObjects = new List<string>();
             List<int> orbitsCounterList = new List<int>();
             Dictionary<string, int> SANroute = new Dictionary<string, int>();
             Dictionary<string, int> YOUroute = new Dictionary<string, int>();
@@ -24,12 +24,12 @@ namespace AdventOfCode2019
             {
                 string[] orbit = fileline.Split(')');
                 orbitList.Add(new Element { Parent = orbit[0], Child = orbit[1] });
-                parentObject.Add(orbit[0]);
-                childObject.Add(orbit[1]);
+                parentObjects.Add(orbit[0]);
+                childObjects.Add(orbit[1]);
             }
 
             //COM
-            string parentOfParents = parentObject.Where(x => !childObject.Contains(x)).FirstOrDefault();
+            string parentOfParents = parentObjects.Where(x => !childObjects.Contains(x)).FirstOrDefault();
 
             foreach (Element element in orbitList)
             {
